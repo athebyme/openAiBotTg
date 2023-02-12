@@ -5,4 +5,4 @@ from dataclasses import dataclass
 class Config:
     tokenBot: str = "BOT_TOKEN"
     tokenOpenAi: str = "OPENAIAPIKEY"
-    adminIds: int = 447590340
+    adminIds: int = 1

@@ -1,6 +1,6 @@
 import asyncio
 import time
-from main import bot, botLog, dpBot
+from main import bot, dpBot
 import aiogram
 import openai
 
@@ -10,11 +10,8 @@ openai.api_key = Config.tokenOpenAi
 adminId = Config.adminIds
 
 @dpBot.message_handler(commands=(['start']))
-async def startBot(message): await asyncio.gather(
-    botLog.send_message(chat_id=adminId, text="[✅] userId: {0}\n -- Start Command".format(message.from_user.id)),
-    bot.send_message(chat_id=message.from_user.id,
+async def startBot(message): await bot.send_message(chat_id=message.from_user.id,
                           text=f"Привет, {message.chat.first_name}! Я бот, основанный на технологии Open AI Chat GPT 3.0;\nЯ научен на огромнейших массивах данных 2020 года. Когда-нибудь мне проведут интернет и я устрою скайнет\nЯ нахожусь в стадии разработки и пока не поддерживаю контекстный разговор, только лишь вопрос-ответ :(\nЯ нейросеть, и, как и Вы, людишки, могу ошибаться. Иногда я могу сгенерировать два разных ответа на один и тот же вопрос. Но мой Господин-разработчик, точно это исправит (когда-нибудь)\nP.S. Автор не несет ответственности за ошибочные ответы нейросети.\nВсе права не защищены CrazyBobsTechnologies(c) 2023\n\nСпроси меня о чем-нибудь")
-    )
 
 
 @dpBot.message_handler(content_types=aiogram.types.ContentType.TEXT)
@@ -55,8 +52,6 @@ async def handle_message(message):
         except Exception as ex:
             requestUser = "[❌] Извините, произошла непредвиденная ошибка. Я уже отправил уведомление разбработчику! Попробуйте еще раз или переформулируйте запрос."
             requestLog = f"[❌] EXCEPTION {ex} \n\n{message.text[:2000]} \   {time.asctime(time.localtime())}    ||---->> LOG: {message.from_user.id}\n [!] RESPONSE:\n [❌] Извините, произошла непредвиденная ошибка. Я уже отправил уведомление разбработчику! Попробуйте еще раз или переформулируйте запрос."
-    await asyncio.gather(bot.send_message(message.from_user.id,
+    await bot.send_message(message.from_user.id,
                                           requestUser,
-                                          ),
-                         botLog.send_message(adminId,
-                                             requestLog))
+                                          )
